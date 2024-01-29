@@ -1,4 +1,4 @@
-﻿namespace Web.Api.Settings
+﻿namespace Web.Api.Infrastructure.MessageBroker
 {
     public class MessageBrokerSetting
     {
