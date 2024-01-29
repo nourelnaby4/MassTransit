@@ -25,7 +25,7 @@ namespace Web.Api.Features.Products.ProductCreate
             };
             _session.Add((nameof(Product), model.Id), model);
 
-            await _eventBus.PublishAsync(new ProductCreatedEvent
+            await _eventBus.PublishAsync(new ProductCreatedEventModel
             {
                 Id=model.Id,
                 Name=request.Name,
