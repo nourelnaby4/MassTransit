@@ -2,6 +2,7 @@ using MassTransit;
 using Microsoft.Extensions.Options;
 using System.Reflection;
 using Web.Api.EventBus;
+using Web.Api.Features.Products.ProductCreate;
 using Web.Api.Infrastructure.MessageBroker;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,6 +23,7 @@ builder.Services.AddTransient<IEventBus,EventBus>();
 builder.Services.AddMassTransit(config =>
 {
     config.SetKebabCaseEndpointNameFormatter();
+    config.AddConsumer<ProductCreatedEventConsumer>();
     config.UsingRabbitMq((context, cfg) =>
     {
         var setting=context.GetRequiredService<MessageBrokerSetting>();
