@@ -2,7 +2,7 @@
 
 namespace Web.Api.Features.Products.ProductCreate
 {
-    public class ProductCreatedEventConsumer : IConsumer<ProductCreatedEventModel>
+    public  class ProductCreatedEventConsumer : IConsumer<ProductCreatedEventModel>
     {
         private readonly ILogger<ProductCreatedEventConsumer> _logger;
         public ProductCreatedEventConsumer(ILogger<ProductCreatedEventConsumer> logger)
@@ -11,7 +11,7 @@ namespace Web.Api.Features.Products.ProductCreate
         }
         public Task Consume(ConsumeContext<ProductCreatedEventModel> context)
         {
-            _logger.LogInformation("product data is listening {@Product}", context.Message);
+            _logger.LogInformation($"product data is listening: {context.Message}");
             return Task.CompletedTask;
         }
     }

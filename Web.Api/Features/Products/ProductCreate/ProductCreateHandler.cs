@@ -15,22 +15,29 @@ namespace Web.Api.Features.Products.ProductCreate
         }
         public async Task<string> Handle(ProductCreateRequest request, CancellationToken cancellationToken)
         {
-            var model = new Product
+            try
             {
-                Id=Guid.NewGuid(),
-                Name = request.Name,
-                Price = request.Price,
-                dicount = request.dicount,
-                Description = request.Description,
-            };
-            _session.Add((nameof(Product), model.Id), model);
+                var model = new Product
+                {
+                    Id = Guid.NewGuid(),
+                    Name = request.Name,
+                    Price = request.Price,
+                    dicount = request.dicount,
+                    Description = request.Description,
+                };
+                _session.Add((nameof(Product), model.Id), model);
 
-            await _eventBus.PublishAsync(new ProductCreatedEventModel
-            {
-                Id=model.Id,
-                Name=request.Name,
-                Price=request.Price,
-            },cancellationToken);
+                await _eventBus.PublishAsync(new ProductCreatedEventModel
+                {
+                    Id = model.Id,
+                    Name = request.Name,
+                    Price = request.Price,
+                }, cancellationToken);
+            }
+            catch (Exception ex) {
+                return "fail";
+            }
+           
             return "success";
         }
     }

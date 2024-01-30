@@ -20,9 +20,17 @@ builder.Services.AddMediatR(config => config.RegisterServicesFromAssemblies(asse
 builder.Services.Configure<MessageBrokerSetting>(builder.Configuration.GetSection("MessageBroker"));
 builder.Services.AddSingleton(sp=>sp.GetRequiredService<IOptions<MessageBrokerSetting>>().Value);
 builder.Services.AddTransient<IEventBus,EventBus>();
+
 builder.Services.AddMassTransit(config =>
 {
     config.SetKebabCaseEndpointNameFormatter();
+    config.SetInMemorySagaRepositoryProvider();
+    var assemblly = typeof(Program).Assembly;
+    config.AddConsumers(assemblly);
+    config.AddSagaStateMachines(assemblly);
+    config.AddSagas(assemblly);
+    config.AddActivities(assemblly);
+
     config.AddConsumer<ProductCreatedEventConsumer>();
     config.UsingRabbitMq((context, cfg) =>
     {
@@ -32,7 +40,9 @@ builder.Services.AddMassTransit(config =>
             h.Username(setting.Username);
             h.Password(setting.Password);
         });
+        cfg.ConfigureEndpoints(context);
     });
+
 });
 
 var app = builder.Build();

@@ -10,8 +10,10 @@ namespace Web.Api.Infrastructure.MessageBroker
         {
             _publishEndpoint = endpoint;
         }
-        public Task PublishAsync<T>(T message, CancellationToken cancellationToken = default) =>
-            _publishEndpoint.Publish(message, cancellationToken);
+        public  Task PublishAsync<T>(T message, CancellationToken cancellationToken = default) where T : class
+            => _publishEndpoint.Publish(message, cancellationToken);
+
         
+
     }
 }
